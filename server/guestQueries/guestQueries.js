@@ -1,16 +1,16 @@
 const { guestQuery } = require('./getGuestQueries.js');
 
 const saveGuest = async (guestDetails) => {
-    let { firstName,
-        lastName,
+    let { first_name,
+        last_name,
         food,
         time,
         coming
     } = guestDetails
     try {
         let query = `INSERT INTO guest (first_name, last_name,food , day_or_night, coming) VALUES ($1,$2,$3,$4,$5) RETURNING first_name, last_name,food , day_or_night, coming`
-        let parameters = [firstName,
-            lastName,
+        let parameters = [first_name,
+            last_name,
             food,
             time,
             coming
@@ -35,11 +35,12 @@ const deleteGuest = async (id) => {
 }
 
 const editGuest = async (id,data) => {
-    const {lastName, firstName,food,time,coming}=data
-    let query = `UPDATE guest SET  first_name=$1, last_name=$2, food=$3, day_or_night=$4, coming=$5 WHERE id = $6`
-    let guestEdited = await guestQuery(query,[firstName,lastName,food,time,coming,id])
+    const {last_name, first_name,food,time,coming}=data
+    let query = `UPDATE guest SET  first_name=$1, last_name=$2, food=$3, day_or_night=$4, coming=$5 WHERE id = $6 RETURNING first_name, last_name,food , day_or_night, coming` 
+    let guestEdited = await guestQuery(query,[first_name,last_name,food,time,coming,id])
     return guestEdited
 }
+
 
 module.exports = {
  saveGuest,
